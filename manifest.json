@@ -1,0 +1,31 @@
+{
+    "manifest_version": 3,
+    "name": "YSASH",
+    "version": "0.1.0",
+    "description": "Change Youtube video speed and block Youtube shorts",
+    "action": {
+      "default_title": "Ysash",
+      "default_popup": "popup.html"
+    },
+    "permissions": [
+      "activeTab",
+      "scripting",
+      "tabs"
+    ],  
+    "host_permissions": [
+      "*://*.youtube.com/*"
+    ],
+    "content_scripts": [
+      {
+        "matches": ["*://*.youtube.com/*"],
+        "js": ["content.js"],
+        "run_at": "document_end" 
+      },
+      {
+        "matches": ["*://*.youtube.com/*"],
+        "js": ["shorts.js"],
+        "run_at": "document_start"
+      }
+    ]
+    
+  }
