@@ -47,4 +47,5 @@ document.addEventListener("DOMContentLoaded", () => {
         );
       });
     });
+    speedSelect.focus();
   });

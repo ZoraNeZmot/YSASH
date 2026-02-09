@@ -16,12 +16,13 @@ function getCurrentSpeed() {
  * @returns {number}
  */
 function setSpeed(speed) {
-    const video = document.querySelector("video");
-    if (video) {
-      video.playbackRate = speed;
-    }
-    saveSpeed(speed);
-    return speed;
+  const video = document.querySelector("video");
+  
+  if (video) {
+    video.playbackRate = speed;
+  } 
+  saveSpeed(speed);
+  return speed;
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -36,18 +37,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 /**
  * @param {number} speed 
  */
-function saveSpeed(speed) {
-  const temp = sessionStorage.getItem("yt-player-playback-rate")
+async function saveSpeed(speed) {
+  const temp = await chrome.storage.session.get("yt-player-playback-rate");
+  alert("saveSpeed");
   if (!temp || Number.parseInt(temp) !== speed) {
-    sessionStorage.setItem("yt-player-playback-rate", JSON.stringify({data: speed.toString(), creation: Date.now()}));
+    chrome.storage.session.set("yt-player-playback-rate", JSON.stringify({data: speed.toString(), creation: Date.now()}))
   }
 }
 
 /**
- * @returns {number} 
+ * @returns {Promise<number>} 
  */
-function downloadSpeed() {
-  const sp = sessionStorage.getItem("yt-player-playback-rate");
+async function downloadSpeed() {
+  const sp = await chrome.storage.session.get("yt-player-playback-rate");
   if (sp) {
     return setSpeed(Number.parseInt(sp));
   }
@@ -58,8 +60,8 @@ function downloadSpeed() {
 
 
 document.addEventListener("DOMContentLoaded", ()=>{
-  setTimeout(()=>{
-    const speed = downloadSpeed();
+  setTimeout(async ()=>{
+    const speed = await downloadSpeed();
     if (speed !== 1) {
       setSpeed(1);
     }
