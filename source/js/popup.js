@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { action: "getSpeed" },
         (response) => {
           if (chrome.runtime.lastError) {
+            console.log(tab);
             console.log("Error getting speed:", chrome.runtime.lastError.message);
             speedSelect.value = "1";
           } else if (response && response.speed) {
